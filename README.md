@@ -41,6 +41,13 @@ Activate your environment (if not already done):
 conda activate agario-Tom
 ```
 
+clone the project 
+
+```bash
+git clone https://github.com/B2-Info-23-24/agarpyo-b2-a-godafflig.git
+
+```
+
 4. **Run your game:**
 
 Navigate to your project directory and run your game script. For example:
