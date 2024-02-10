@@ -15,8 +15,8 @@ def check_overlap(item1, item2):
 
 def display_end_game_screen(screen, myfont, score):
     screen.fill((0, 0, 0))  
-    text_score = myfont.render(f'Score final: {score}', True, (255, 255, 255))
-    text_continue = myfont.render('Appuyez sur n\'importe quelle touche pour continuer.', True, (255, 255, 255))
+    text_score = myfont.render(f'Score final: {score} ', True, (255, 255, 255))
+    text_continue = myfont.render('Appuyez sur n\'importe quelle touche pour retourner au menu.', True, (255, 255, 255))
     screen.blit(text_score, (320, 340))
     screen.blit(text_continue, (320, 380))
     pygame.display.flip()
