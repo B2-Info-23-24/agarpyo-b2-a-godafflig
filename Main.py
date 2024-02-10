@@ -1,10 +1,9 @@
 import pygame
 import sys
 
-# Assurez-vous que les classes Player, Food, Trap, GameSettings, et Menu sont correctement définies
-from Player import Player
-from Food import Food  
-from Trap import Trap
+from player import Player
+from food import Food  
+from trap import Trap
 from gamesetting import GameSettings
 from menu import Menu
 
@@ -15,8 +14,7 @@ def check_overlap(item1, item2):
     return distance < (item1.size + item2.size)
 
 def display_end_game_screen(screen, myfont, score):
-    """Affiche un écran de fin de jeu avec le score et attend une action pour continuer."""
-    screen.fill((0, 0, 0))  # Efface l'écran
+    screen.fill((0, 0, 0))  
     text_score = myfont.render(f'Score final: {score}', True, (255, 255, 255))
     text_continue = myfont.render('Appuyez sur n\'importe quelle touche pour continuer.', True, (255, 255, 255))
     screen.blit(text_score, (320, 340))
@@ -29,14 +27,13 @@ def display_end_game_screen(screen, myfont, score):
                 pygame.quit()
                 sys.exit()
             elif event.type == pygame.KEYDOWN:
-                return  # Retour au menu principal
+                return  
 
 def game_loop(screen, game_settings, myfont):
     clock = pygame.time.Clock()
     player = Player(640, 360, screen_width=1280, screen_height=720, controller=game_settings.control_mode)
-    food = Food(1280, 720)
+    food_items = [Food(1280, 720) for _ in range(game_settings.get_nb_food())]  
     traps = [Trap(1280, 720) for _ in range(game_settings.get_nb_pieges())]
-    myfont = pygame.font.SysFont('Comic Sans MS', 30)  
 
     TIMER = pygame.USEREVENT + 1
     pygame.time.set_timer(TIMER, 1000)
@@ -44,28 +41,34 @@ def game_loop(screen, game_settings, myfont):
 
     running = True
     while running:
+        screen.fill((0, 0, 0))  
+
         for event in pygame.event.get():
-            # Gestion des événements...
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
-                    return  # Retour immédiat au menu principal
+                    return  
                 elif event.key == pygame.K_p:
                     player.toggle_control_mode()
             elif event.type == TIMER:
                 sec -= 1
                 if sec <= 0:
                     display_end_game_screen(screen, myfont, player.score)
-                    return  # Fin de la partie, retour au menu
-
+                    return 
 
         keys = pygame.key.get_pressed()
         player.move(keys)
+        
+        for single_food in food_items: 
+            single_food.draw(screen)
+            if single_food.is_eaten(player.position_x, player.position_y, player.size):
+                single_food.reposition()
+                player.eat_food()
+                
+        player.draw(screen) 
+                
 
-        if food.is_eaten(player.position_x, player.position_y, player.size):
-            food.reposition()
-            player.eat_food()
-
-        for trap in traps:
+        for trap in traps:  
+            trap.draw(screen)
             if trap.player_touch_trap(player):
                 if player.size > trap.size:
                     player.size /= 2
@@ -75,27 +78,24 @@ def game_loop(screen, game_settings, myfont):
                     else:
                         player.speed = max(player.speed, 1)
                     trap.reposition()
-        screen.fill((0, 0, 0))
-        food.draw(screen)
-        player.draw(screen)
-        for trap in traps:
-            trap.draw(screen)
 
-        # Affichage des informations du jeu...
+        
+        
+        
+        
         countdown_surface = myfont.render(f'Temps restant: {sec}s', False, (255, 255, 255))
         screen.blit(countdown_surface, (10, 100))
         score_surface = myfont.render(f'Score: {player.score}', False, (255, 255, 255))
         speed_surface = myfont.render(f'Speed: {int(player.speed * 100)}', False, (255, 255, 255))
         size_surface = myfont.render(f'Size: {player.size}', False, (255, 255, 255))
-        difficulty_text = f"                Difficulté :  {game_settings.get_difficulty_name()} ,     recommencer : ECHAP  ,   quitter le jeu : P "  # Adaptez cette ligne
+        difficulty_text = f"                Difficulté :  {game_settings.get_difficulty_name()} ,     menu : ECHAP  ,   controller : P "  
         difficulty_surface = myfont.render(difficulty_text, False, (255, 255, 255))
-        screen.blit(difficulty_surface, (10, 10))  # Ajustez la position selon vos besoins
+        screen.blit(difficulty_surface, (10, 10))  
         screen.blit(score_surface, (10, 10))
         screen.blit(speed_surface, (10, 40))
         screen.blit(size_surface, (10, 70))
-         # Après avoir dessiné tout le reste sur l'écran, mais avant `pygame.display.flip()`
         countdown_surface = myfont.render(f'Temps restant: {sec}s', False, (255, 255, 255))
-        screen.blit(countdown_surface, (10, 100))  # Ajustez la position selon vos besoins
+        screen.blit(countdown_surface, (10, 100)) 
         pygame.display.flip()
         clock.tick(60)
 

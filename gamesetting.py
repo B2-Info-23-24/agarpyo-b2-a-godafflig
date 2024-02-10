@@ -5,8 +5,9 @@ class GameSettings:
     def __init__(self, screen):
         self.screen = screen
         self.difficulty = None
-        self.control_mode = None  # Ajoutez cette ligne
+        self.control_mode = None  
         self.nb_pieges = 0
+        self.nb_food = 0 
         self.myfont = pygame.font.SysFont('Comic Sans MS', 30)
         self.difficulties = {
             'Facile': 1,
@@ -15,7 +16,7 @@ class GameSettings:
         }
 
     def select_difficulty(self):
-        self.screen.fill((0, 0, 0))  # Efface l'écran
+        self.screen.fill((0, 0, 0))  
         y = 100
         for difficulty in self.difficulties.keys():
             text_surface = self.myfont.render(difficulty, False, (255, 255, 255))
@@ -38,31 +39,33 @@ class GameSettings:
                         self.difficulty = self.difficulties['Difficile']
                     running = False
     
-    # Nouvelle méthode pour configurer la difficulté directement avec le choix du menu
     def set_difficulty(self, difficulty):
         if difficulty in self.difficulties:
             self.difficulty = self.difficulties[difficulty]
-            self.configure_game()  # Appelle configure_game pour mettre à jour les paramètres selon la difficulté
+            self.configure_game() 
 
     def configure_game(self):
         if self.difficulty:
-            if self.difficulty == 1:  # Facile
+            if self.difficulty == 1:  
                 self.nb_pieges = 2
-            elif self.difficulty == 2:  # Normal
+                self.nb_food = 5
+            elif self.difficulty == 2:  
                 self.nb_pieges = 4
-            elif self.difficulty == 3:  # Difficile
+                self.nb_food = 3
+            elif self.difficulty == 3:  
                 self.nb_pieges = 6
-            # Ajoutez ici d'autres configurations basées sur la difficulté
+                self.nb_food = 2
 
     def get_nb_pieges(self):
         return self.nb_pieges
+    def get_nb_food(self):
+        return self.nb_food
 
     def get_difficulty(self):
         return self.difficulty
     def set_control_mode(self, mode):
         self.control_mode = mode
     def get_difficulty_name(self):
-    # Supposant que 'difficulty' stocke une des clés de 'difficulties'
         for name, value in self.difficulties.items():
             if value == self.difficulty:
                 return name
