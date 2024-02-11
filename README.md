@@ -63,3 +63,5 @@ Navigate to your project directory and run your game script. For example:
 cd .\agarpyo-b2-a-godafflig\
 python main.py
 ```
+
+the game you are the a ball and you can eat food for growup , youh have 3 difficulty ( easy meduim and hard ) and you can play with keyboard and mouse . all the infomration for the game is in the game ty and enjoy :)  
