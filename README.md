@@ -10,6 +10,13 @@ This project is developed with Pygame in a Python Anaconda environment. Here are
 
 - Anaconda or Miniconda installed on your system. If you do not have Anaconda, visit the official Anaconda website to download and install it.
 
+### clone the project
+
+```bash
+git clone https://github.com/B2-Info-23-24/agarpyo-b2-a-godafflig.git
+
+```
+
 ### Environment Setup
 
 1. **Create a new Anaconda environment:**
@@ -41,7 +48,7 @@ Activate your environment (if not already done):
 conda activate agario-Tom
 ```
 
-clone the project 
+clone the project
 
 ```bash
 git clone https://github.com/B2-Info-23-24/agarpyo-b2-a-godafflig.git
